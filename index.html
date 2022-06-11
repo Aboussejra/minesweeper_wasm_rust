@@ -23,15 +23,17 @@
   <body>
     <div id="root"></div>
     <script type="module">
-        import init, {getState} from "./pkg/minesweeper_wasm_rust.js";
+        import init, {getState, openField} from "./pkg/minesweeper_wasm_rust.js";
         async function main(){
             await init();
 
-            render(getState());
+            render();
         }
-        function render(state) {
+        function render() {
           let root = document.getElementById("root")
           root.innerHTML = "";
+
+          let state = getState();
           let data = state.split("\n").map(row => row.trim().split(/\s+/));
           
           root.style.display = "inline-grid";
@@ -43,6 +45,11 @@
               element.classList.add("field");
               element.href = "#";
               element.innerText = data[y][x];
+              element.addEventListener("click", evt => {
+                evt.preventDefault();
+                openField(x,y);
+                render();
+              });
               root.appendChild(element);
             }
           }

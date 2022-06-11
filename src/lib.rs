@@ -1,22 +1,19 @@
 mod minesweeper;
+use std::cell::RefCell;
+
 use minesweeper::Minesweeper;
 use wasm_bindgen::prelude::*;
 
-// Import the `window.alert` function from the Web.
-#[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
-
-// Export a `greet` function from Rust to JavaScript, that alerts a
-// hello message.
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    alert(&format!("Hello, {}!", name));
+thread_local! {
+    static MINESWEEPER: std::cell::RefCell<Minesweeper>  = RefCell::new(Minesweeper::new(10,10,5));
 }
 
 #[wasm_bindgen(js_name = getState)]
 pub fn get_state() -> String {
-    let minesweeper = Minesweeper::new(10,10,5);
-    minesweeper.to_string()
+    MINESWEEPER.with(|ms| ms.borrow().to_string())
+}
+
+#[wasm_bindgen(js_name = openField)]
+pub fn open_field(x: usize, y: usize) {
+    MINESWEEPER.with(|ms| ms.borrow_mut().open((x, y)));
 }
