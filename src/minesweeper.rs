@@ -11,7 +11,7 @@ pub enum OpenResult {
     NoMine(usize),
 }
 #[derive(Debug, Clone)]
-struct Minesweeper {
+pub struct Minesweeper {
     width: usize,
     height: usize,
     open_fields: HashSet<Position>,
