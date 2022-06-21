@@ -21,9 +21,11 @@
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+    </div>
+    <button id="reset">Reset game</button>
     <script type="module">
-        import init, {getState, openField, toggleFlag} from "./pkg/minesweeper_wasm_rust.js";
+        import init, {getState, openField, toggleFlag, resetGame} from "./pkg/minesweeper_wasm_rust.js";
         async function main(){
             await init();
 
@@ -59,7 +61,11 @@
               root.appendChild(element);
             }
           }
-
+          let reset = document.getElementById("reset");
+          reset.addEventListener("click", (evt) => {
+            resetGame();
+            render();
+          })
         }
         main();
     </script>

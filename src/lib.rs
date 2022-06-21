@@ -23,3 +23,8 @@ pub fn toggle_flag(x: usize, y: usize) {
   MINESWEEPER.with(|ms| {
     ms.borrow_mut().toggle_flag((x, y))})
   }
+
+ #[wasm_bindgen(js_name = resetGame)]
+ pub fn reset_game() {
+MINESWEEPER.with(|ms| ms.borrow_mut().reset())
+ }

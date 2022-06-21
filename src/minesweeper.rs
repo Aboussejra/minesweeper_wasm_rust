@@ -108,6 +108,9 @@ impl Minesweeper {
             self.flagged_fields.insert(pos);
         }
     }
+    pub fn reset(&mut self) {
+        *self = Minesweeper::new(10,10,5);
+    }
 }
 
 #[cfg(test)]
