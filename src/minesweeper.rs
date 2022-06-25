@@ -109,7 +109,10 @@ impl Minesweeper {
         }
     }
     pub fn reset(&mut self) {
-        *self = Minesweeper::new(10,10,5);
+        *self = Minesweeper::new(10, 10, 5);
+    }
+    pub fn change_bomb_number(&mut self, mine_count: usize) {
+        *self = Minesweeper::new(10, 10, mine_count);
     }
 }
 

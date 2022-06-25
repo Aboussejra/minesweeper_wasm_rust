@@ -6,6 +6,7 @@ import init, {
   openField,
   toggleFlag,
   resetGame,
+  resetChangeMineNumber,
 } from "../../../pkg/minesweeper_wasm_rust.js";
 const component = defineComponent({
   name: "mine-sweeper",
@@ -37,6 +38,10 @@ const component = defineComponent({
     },
     reset(): void {
       resetGame();
+      this.update_data();
+    },
+    reset_change_mine_number(mine_count: number): void {
+      resetChangeMineNumber(mine_count);
       this.update_data();
     },
   },
@@ -75,6 +80,14 @@ export default component;
         @click="reset()"
       >
         Reset game
+      </button>
+      <button
+        id="reset_change_mine_number"
+        class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full"
+        style="font-size: 18px"
+        @click="reset_change_mine_number(40)"
+      >
+        Put 40 mines
       </button>
     </div>
   </div>

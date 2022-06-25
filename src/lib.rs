@@ -20,11 +20,15 @@ pub fn open_field(x: usize, y: usize) {
 
 #[wasm_bindgen(js_name = toggleFlag)]
 pub fn toggle_flag(x: usize, y: usize) {
-  MINESWEEPER.with(|ms| {
-    ms.borrow_mut().toggle_flag((x, y))})
-  }
+    MINESWEEPER.with(|ms| ms.borrow_mut().toggle_flag((x, y)))
+}
 
- #[wasm_bindgen(js_name = resetGame)]
- pub fn reset_game() {
-MINESWEEPER.with(|ms| ms.borrow_mut().reset())
- }
+#[wasm_bindgen(js_name = resetGame)]
+pub fn reset_game() {
+    MINESWEEPER.with(|ms| ms.borrow_mut().reset())
+}
+
+#[wasm_bindgen(js_name = resetChangeMineNumber)]
+pub fn reset_change_mine_number(mine_count: usize) {
+    MINESWEEPER.with(|ms| ms.borrow_mut().change_bomb_number(mine_count))
+}
