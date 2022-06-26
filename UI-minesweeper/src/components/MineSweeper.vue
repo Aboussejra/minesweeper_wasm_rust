@@ -17,6 +17,11 @@ const component = defineComponent({
     let data = ref([] as string[][]);
     return { ready, data };
   },
+  data() {
+    return {
+      mines: 5,
+    };
+  },
   async mounted() {
     await init();
     this.ready = true;
@@ -73,23 +78,25 @@ export default component;
       </div>
     </div>
     <div>
-      <button
-        id="reset"
-        class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full"
-        style="font-size: 18px"
-        @click="reset()"
-      >
-        Reset game
-      </button>
-      <button
-        id="reset_change_mine_number"
-        class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full"
-        style="font-size: 18px"
-        @click="reset_change_mine_number(40)"
-      >
-        Put 40 mines
-      </button>
+      <div>Mines count: {{ mines }}</div>
+
+      <select v-model="mines">
+        <option disabled value="">Please select mine count</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>40</option>
+        <option>80</option>
+      </select>
     </div>
+    <button
+      id="reset_change_mine_number"
+      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full"
+      style="font-size: 18px"
+      @click="reset_change_mine_number(this.mines)"
+    >
+      Reset with {{ mines }} mines
+    </button>
   </div>
 </template>
 
