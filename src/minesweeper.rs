@@ -6,10 +6,6 @@ use std::{
 
 type Position = (usize, usize);
 
-pub enum OpenResult {
-    Mine,
-    NoMine(usize),
-}
 #[derive(Debug, Clone)]
 pub struct Minesweeper {
     width: usize,
@@ -86,17 +82,22 @@ impl Minesweeper {
             .filter(|pos| self.mines.contains(pos))
             .count()
     }
-    pub fn open(&mut self, position: Position) -> Option<OpenResult> {
+    pub fn open(&mut self, position: Position) -> Option<usize> {
         if self.flagged_fields.contains(&position) {
             return None;
         }
         self.open_fields.insert(position);
-        let is_mine = self.mines.contains(&position);
-        if is_mine {
-            Some(OpenResult::Mine)
-        } else {
-            Some(OpenResult::NoMine(0))
+        if self.mines.contains(&position){
+            self.lost = true;
+            return None
         }
+        for pos in self.iter_neighbors(position) {
+            let is_mine = self.mines.contains(&pos);
+            if !is_mine {
+            self.open_fields.insert(pos);
+            }
+        }
+        Some(0)
     }
     pub fn toggle_flag(&mut self, pos: Position) {
         if self.lost || self.open_fields.contains(&pos) {
