@@ -83,18 +83,28 @@ impl Minesweeper {
             .count()
     }
     pub fn open(&mut self, position: Position) -> Option<usize> {
+        // If flagged, we do not open
         if self.flagged_fields.contains(&position) {
             return None;
         }
+        // Else we open
         self.open_fields.insert(position);
-        if self.mines.contains(&position){
+        // If mine, we have lost
+        if self.mines.contains(&position) {
             self.lost = true;
-            return None
+            return None;
         }
+        // Breadth first search to open safe neighbors not already seen in open fields
         for pos in self.iter_neighbors(position) {
-            let is_mine = self.mines.contains(&pos);
-            if !is_mine {
-            self.open_fields.insert(pos);
+            // Is the position safe ? (e.g no neighbors have mines)
+            let unsafe_pos = self
+                .iter_neighbors(position)
+                .any(|pos| self.mines.contains(&pos));
+            if !self.mines.contains(&pos) {
+                // If not already opened and safe, open it to make game faster
+                if self.open_fields.insert(pos) && !unsafe_pos {
+                    self.open(pos);
+                }
             }
         }
         Some(0)
